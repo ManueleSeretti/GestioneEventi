@@ -7,6 +7,7 @@ import ManueleSeretti.GestioneEventi.services.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
     Event save(@RequestBody @Validated NewEventDTO eventDTO, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
@@ -46,12 +48,14 @@ public class EventController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void findEventByIdAndDelete(@PathVariable long id) {
         eventService.findByIdAndDelete(id);
     }
 
     @PostMapping("/upload/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String uploadExample(@RequestParam("image") MultipartFile body, @PathVariable long id) throws IOException {
         System.out.println(body.getSize());
         System.out.println(body.getContentType());

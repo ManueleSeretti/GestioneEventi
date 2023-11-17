@@ -32,6 +32,7 @@ public class UsersController {
 
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<User> getUser(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String orderBy) {
@@ -62,6 +63,7 @@ public class UsersController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User findById(@PathVariable int id) {
         return usersService.findById(id);
     }
