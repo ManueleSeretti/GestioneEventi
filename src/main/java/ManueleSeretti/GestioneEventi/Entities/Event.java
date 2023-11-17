@@ -19,7 +19,7 @@ public class Event {
 
     private String title;
     private String description;
-    private String luogo;
+    private String location;
     private LocalDate date;
     private int posti;
 }
