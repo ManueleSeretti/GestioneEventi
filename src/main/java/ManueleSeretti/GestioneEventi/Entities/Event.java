@@ -1,11 +1,13 @@
 package ManueleSeretti.GestioneEventi.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,4 +24,8 @@ public class Event {
     private String location;
     private LocalDate date;
     private int posti;
+
+    @ManyToMany(mappedBy = "events")
+    @JsonIgnore
+    private Set<User> participants;
 }

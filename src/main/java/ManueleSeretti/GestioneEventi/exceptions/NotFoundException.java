@@ -2,7 +2,7 @@ package ManueleSeretti.GestioneEventi.exceptions;
 
 public class NotFoundException extends RuntimeException {
 
-    public NotFoundException(int id) {
+    public NotFoundException(long id) {
         super("Elemento con id " + id + " non trovato!");
     }
 

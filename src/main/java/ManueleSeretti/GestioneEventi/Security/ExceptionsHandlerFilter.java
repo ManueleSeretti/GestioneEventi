@@ -1,4 +1,4 @@
-package ManueleSeretti.GestioneEventi.exceptions;
+package ManueleSeretti.GestioneEventi.Security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
