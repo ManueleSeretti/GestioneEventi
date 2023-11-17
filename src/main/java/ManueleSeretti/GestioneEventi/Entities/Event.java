@@ -17,15 +17,16 @@ import java.util.Set;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private String title;
     private String description;
     private String location;
     private LocalDate date;
     private int posti;
+    private String imgUrl;
 
-    @ManyToMany(mappedBy = "events")
+    @OneToMany(mappedBy = "event")
     @JsonIgnore
-    private Set<User> participants;
+    private Set<Partecipation> participants;
 }

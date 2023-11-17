@@ -1,6 +1,5 @@
 package ManueleSeretti.GestioneEventi.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,7 +24,7 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private String username;
     private String email;
@@ -33,13 +32,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany
-    @JsonIgnore
-    @JoinTable(
-            name = "partecipazioni",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "event_id"))
-    private Set<Event> events;
+    @OneToMany(mappedBy = "user")
+    private Set<Partecipation> events;
 
     @CreationTimestamp
     private Date createdAt;

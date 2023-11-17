@@ -1,10 +1,13 @@
 package ManueleSeretti.GestioneEventi.services;
 
+import ManueleSeretti.GestioneEventi.Entities.Event;
 import ManueleSeretti.GestioneEventi.Entities.Role;
 import ManueleSeretti.GestioneEventi.Entities.User;
 import ManueleSeretti.GestioneEventi.exceptions.BadRequestException;
 import ManueleSeretti.GestioneEventi.exceptions.NotFoundException;
+import ManueleSeretti.GestioneEventi.payload.NewPartecipationDTO;
 import ManueleSeretti.GestioneEventi.payload.NewUserDTO;
+import ManueleSeretti.GestioneEventi.repositories.EventRepository;
 import ManueleSeretti.GestioneEventi.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,10 @@ public class UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private PartecipationService partecipationService;
 
     @Autowired
     private PasswordEncoder bcrypt;
@@ -53,7 +60,7 @@ public class UsersService {
         return usersRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public void findByIdAndDelete(int id) throws NotFoundException {
+    public void findByIdAndDelete(long id) throws NotFoundException {
         User found = this.findById(id);
         usersRepository.delete(found);
     }
@@ -62,6 +69,14 @@ public class UsersService {
     public User findByEmail(String email) {
         return usersRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Utente con email " + email + " non trovato!"));
+    }
+
+
+    public String eventPartecipation(long eventId, User currentUser) throws IOException {
+        Event e = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(eventId));
+        NewPartecipationDTO newPartecipation = new NewPartecipationDTO(eventId, currentUser.getId());
+        partecipationService.save(newPartecipation);
+        return "partecipazione all'evento " + e.getTitle() + " aggiunta correttamente";
     }
 
 }

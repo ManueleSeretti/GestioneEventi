@@ -13,6 +13,7 @@ package ManueleSeretti.GestioneEventi.controllers;
 
 import ManueleSeretti.GestioneEventi.Entities.User;
 import ManueleSeretti.GestioneEventi.services.UsersService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/users")
@@ -49,7 +52,13 @@ public class UsersController {
         usersService.findByIdAndDelete(currentUser.getId());
     }
 
-    ;
+
+    @Transactional
+    @PostMapping("/me/event/{eventId}")
+    @ResponseStatus
+    public String getProfile(@PathVariable long eventId, @AuthenticationPrincipal User currentUser) throws IOException {
+        return usersService.eventPartecipation(eventId, currentUser);
+    }
 
 
     @GetMapping("/{id}")
